@@ -71,15 +71,15 @@ ggplot(df, aes(x = X, y = Y)) +
 
 ```
 
-Find the intersection of two curves. Use the function fzero (from the pracma package) or uniroot (from the stats package) to find where two curves cross. The two curves are:
+e)  Find the intersection of two curves. Use the function fzero (from the pracma package) or uniroot (from the stats package) to find where two curves cross. The two curves are:
 
 (1)Y=a1X+b1
 
-(2)Y=a2X+b2. 
+(2)Y=a2X+b2.
 
 For any values of a1,b1,a2,and b2, we want to know the value of X and Y where these functions cross. To achieve this, follow these steps.
 
-i)  Write a function called fun1 that takes X, a1, and b1 as inputs and delivers Y=a1X + b1 as the output. This is almost exactly the same as in part (b) above. 
+i)  Write a function called fun1 that takes X, a1, and b1 as inputs and delivers Y=a1X + b1 as the output. This is almost exactly the same as in part (b) above.
 
 ```{r}
 fun1 <- function(X, a1, b1){
@@ -109,9 +109,108 @@ fun3 <- function(X, a1, b1, a2, b2){
   return(Z)
 }
 ```
-iv) Use fzero to find the value X* where the two curves intersect, for the following values of the parameters: a1=-2, b1=100, a2=3, b2=0.2 What is the value of Y*, the value of Y when the curves intersect?
+
+iv) Use fzero to find the value X\* where the two curves intersect, for the following values of the parameters: a1=-2, b1=100, a2=3, b2=0.2 What is the value of Y\*, the value of Y when the curves intersect?
+
 ```{r}
 # use fzero to find the value X* where the two curves intersect
 X_star <- fzero(fun3, c(0,50))
+
+# find the value of Y* when the curves intersect
+Y_star <- fun1(X_star[[1]], -2, 100)
+```
+
+f)  Use algebra to confirm that your answer to (e) is correct.
+
+$$
+y = -2x + 100 = 3x + 0.2
+$$ 
+
+$$
+99.8 = 5x
+$$
+
+$$
+x = 19.96
+$$
+$$
+y = -2(19.96) + 100 = 60.08
+$$
+
+### Food Bank Markets
+
+a) Recall the NPR story, where food banks around the country can buy and sell surplus food
+in a new kind of market. Consider the supply and demand for peanut butter (the story
+indicated that it is particularly valuable in this market). In this market there are food
+banks who have surplus peanut butter and food banks that want more peanut butter. The
+currency is “credits” (not “dollars”). The demand curve for peanut butter is given by P =
+500 - .1Q (where P has units “credits per jar” and Q has units “jars” of peanut butter).
+The supply of peanut butter is P = 5 + .05Q. What do you predict would be the
+equilibrium price and quantity of peanut butter that would be traded?
+
+```{r}
+# define the demand and supply functions
+demand <- function(Q, a1, b1){
+  P <- a1*Q + b1
+  return(P)
+}
+
+supply <- function(Q, a2, b2){
+  P <- a2*Q + b2
+  return(P)
+}
+
+# find demand - supply
+ds <- function(Q, a1, b1, a2, b2){
+  a1 <- -0.1
+  b1 <- 500
+  a2 <- 0.05
+  b2 <- 5
+  Z <- fun1(Q, a1, b1) - fun2(Q, a2, b2)
+  return(Z)
+}
+
+# use fzero to find the equilibrium price and quantity of peanut butter that would be traded
+Q_star <- fzero(ds, c(0,5000))
+P_star <- demand(Q_star[[1]], -0.1, 500)
+print(c(Q_star[[1]], P_star))
+```
+
+The predicted equilibrium price of peanut butter is 170 credits per jar and the predicted equilibrium quantity is 3,300 jars.
+
+b) What is the benefit of the new market to food banks that buy peanut butter? What is the
+benefit of the new market to food banks that sell peanut butter?
+
+COME BACK TO THIS !!!!!!!! The benefit of the new market to food banks that buy peanut butter 
+
+c) A very large new food bank in New York City enters the market, with an individual
+demand for peanut butter given by P = 400 - 2Q. Draw the new aggregate demand curve
+in this market. What is the new equilibrium price?
+
+```{r}
+# define the new demand function
+new_demand <- function(Q, a3, b3){
+  P <- a3*Q + b3
+  return(P)
+}
+
+# define the aggregate demand function
+ag_demand <- function(Q, a1, b1, a3, b3){
+  a1 <- -0.1
+  b1 <- 500
+  a3 <- -2
+  b3 <- 400
+  Z <- fun1(Q, a1, b1) + new_demand(Q, a3, b3)
+  return(Z)
+}
+
+ag_demand <- data.frame()
+
+ggplot() +
+  stat_function(fun = function(Q, a1, b1) demand(Q, -0.1, 500), color = "red", xlim=c(0, 5000)) +
+  stat_function(fun = function(Q, a3, b3) new_demand(Q, -2, 400), color = "blue", xlim=c(0, 200))
+  #stat_function(fun = function(Q, a1, b1, a3, b3) ag_demand(Q, -0.1, 500, -2, 400), color = "green", xlim=c(0, 200))
+
+plot(demand, ag_demand)
 ```
 
