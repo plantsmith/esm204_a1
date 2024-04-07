@@ -1,0 +1,41 @@
+---
+title: "ESM 204: Homework #1"
+author: "Natalie Smith"
+format: 
+  html:
+    code-fold: true
+    toc: true
+    number-sections: true
+    embed-resources: true
+theme: Lux
+editor: visual
+execute:
+  echo: true
+  message: false
+  warning: false
+---
+### Basics of R:
+
+a) Launch RStudio and start a new R script (or markdown document, up to you!). Write a simple program that counts from 1 to 10 by increments of 0.5. Print out the results.
+```{r}
+# Count from 1 to 10 by increments of 0.5
+count <- seq(from = 1, to = 10, by = 0.5)
+
+# Print out the results
+print(count)
+```
+b) Write a custom function. Your function should have three inputs (X, a, and b) and one
+output (Y). The function should calculate Y = aX + b. Once you have created it, call your function for the values X=5, b=10, and a=3. What value of Y did you get? Confirm algebraically that it is correct.
+
+```{r}
+# write a custom function with three inputs (X,a,b) and one output (Y). The function should calculate Y = aX + b.
+custom_function <- function(X, a, b){
+  Y <- a*X + b
+  return(Y)
+}
+
+# call the function for the values X=5, b=10, and a=3
+custom_function(5, 3, 10)
+
+```
+
