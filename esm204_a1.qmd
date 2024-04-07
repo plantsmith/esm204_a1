@@ -55,6 +55,12 @@ c)  Build a dataframe. Your dataframe is going to call your function from above.
 df <- data.frame(a = 3, b = 10, X = 0:10, Y = custom_function(0:10, 3, 10))
 print(df)
 
+# Generate the kable table 
+kable_table <- kable(df) %>%
+  kable_styling()
+
+kable_table
+
 ```
 
 d)  Plot using your dataframe. Use ggplot to plot Y (vertical axis) against X (horizontal axis) from your dataframe.
@@ -75,11 +81,11 @@ Find the intersection of two curves. Use the function fzero (from the pracma pac
 
 (1)Y=a1X+b1
 
-(2)Y=a2X+b2. 
+(2)Y=a2X+b2.
 
 For any values of a1,b1,a2,and b2, we want to know the value of X and Y where these functions cross. To achieve this, follow these steps.
 
-i)  Write a function called fun1 that takes X, a1, and b1 as inputs and delivers Y=a1X + b1 as the output. This is almost exactly the same as in part (b) above. 
+i)  Write a function called fun1 that takes X, a1, and b1 as inputs and delivers Y=a1X + b1 as the output. This is almost exactly the same as in part (b) above.
 
 ```{r}
 fun1 <- function(X, a1, b1){
@@ -109,9 +115,10 @@ fun3 <- function(X, a1, b1, a2, b2){
   return(Z)
 }
 ```
-iv) Use fzero to find the value X* where the two curves intersect, for the following values of the parameters: a1=-2, b1=100, a2=3, b2=0.2 What is the value of Y*, the value of Y when the curves intersect?
+
+iv) Use fzero to find the value X\* where the two curves intersect, for the following values of the parameters: a1=-2, b1=100, a2=3, b2=0.2 What is the value of Y\*, the value of Y when the curves intersect?
+
 ```{r}
 # use fzero to find the value X* where the two curves intersect
 X_star <- fzero(fun3, c(0,50))
 ```
-
