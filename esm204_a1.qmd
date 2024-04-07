@@ -1,6 +1,6 @@
 ---
 title: "ESM 204: Homework #1"
-author: "Natalie Smith"
+author: "Natalie Smith and Olivia Hemond"
 format: 
   html:
     code-fold: true
@@ -14,9 +14,18 @@ execute:
   message: false
   warning: false
 ---
+
+```{r}
+library(tidyverse)
+library(kableExtra)
+library(stats)
+library(pracma)
+```
+
 ### Basics of R:
 
-a) Launch RStudio and start a new R script (or markdown document, up to you!). Write a simple program that counts from 1 to 10 by increments of 0.5. Print out the results.
+a)  Launch RStudio and start a new R script (or markdown document, up to you!). Write a simple program that counts from 1 to 10 by increments of 0.5. Print out the results.
+
 ```{r}
 # Count from 1 to 10 by increments of 0.5
 count <- seq(from = 1, to = 10, by = 0.5)
@@ -24,8 +33,8 @@ count <- seq(from = 1, to = 10, by = 0.5)
 # Print out the results
 print(count)
 ```
-b) Write a custom function. Your function should have three inputs (X, a, and b) and one
-output (Y). The function should calculate Y = aX + b. Once you have created it, call your function for the values X=5, b=10, and a=3. What value of Y did you get? Confirm algebraically that it is correct.
+
+b)  Write a custom function. Your function should have three inputs (X, a, and b) and one output (Y). The function should calculate Y = aX + b. Once you have created it, call your function for the values X=5, b=10, and a=3. What value of Y did you get? Confirm algebraically that it is correct.
 
 ```{r}
 # write a custom function with three inputs (X,a,b) and one output (Y). The function should calculate Y = aX + b.
@@ -37,5 +46,72 @@ custom_function <- function(X, a, b){
 # call the function for the values X=5, b=10, and a=3
 custom_function(5, 3, 10)
 
+```
+
+c)  Build a dataframe. Your dataframe is going to call your function from above. We are going to fix a=3 and b=10, and we would like the dataframe to evaluate the function for integer values of X between 0 and 10. The columns of your dataframe should be: a, b, X, and Y. Print the resulting datafram
+
+```{r}
+# create a dataframe with columns a, b, X, and Y
+df <- data.frame(a = 3, b = 10, X = 0:10, Y = custom_function(0:10, 3, 10))
+print(df)
+
+```
+
+d)  Plot using your dataframe. Use ggplot to plot Y (vertical axis) against X (horizontal axis) from your dataframe.
+
+```{r}
+# plot Y (vertical axis) against X (horizontal axis) from the dataframe
+ggplot(df, aes(x = X, y = Y)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Y = 3X + 10",
+       x = "X",
+       y = "Y") +
+  theme_minimal()
+
+```
+
+Find the intersection of two curves. Use the function fzero (from the pracma package) or uniroot (from the stats package) to find where two curves cross. The two curves are:
+
+(1)Y=a1X+b1
+
+(2)Y=a2X+b2. 
+
+For any values of a1,b1,a2,and b2, we want to know the value of X and Y where these functions cross. To achieve this, follow these steps.
+
+i)  Write a function called fun1 that takes X, a1, and b1 as inputs and delivers Y=a1X + b1 as the output. This is almost exactly the same as in part (b) above. 
+
+```{r}
+fun1 <- function(X, a1, b1){
+  Y <- a1*X + b1
+  return(Y)
+}
+```
+
+ii) Write a different function called fun2 that takes X, a2, and b2 as inputs and delivers Y=a2X + b2 as the output.
+
+```{r}
+fun2 <- function(X, a2, b2){
+  Y <- a2*X + b2
+  return(Y)
+}
+```
+
+iii) Write a third function fun3 that takes the following inputs: X, a1, b1, a2, and b2. This new function will call the existing fun1 and fun2. The output is Z=fun1-fun2 (in other words, for any value of X, Z is the difference between the output of the two functions).
+
+```{r}
+fun3 <- function(X, a1, b1, a2, b2){
+  a1 <- -2
+  b1 <- 100
+  a2 <- 3
+  b2 <- 0.2
+  Z <- fun1(X, a1, b1) - fun2(X, a2, b2)
+  return(Z)
+}
+```
+iv) Use fzero to find the value X* where the two curves intersect, for the following values of the parameters: a1=-2, b1=100, a2=3, b2=0.2 What is the value of Y*, the value of Y when the curves intersect?
+```{r}
+# use fzero to find the value X* where the two curves intersect
+X_star <- fzero(fun3, c(0,50))
 ```
 
