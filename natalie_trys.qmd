@@ -3,3 +3,24 @@ title: "natalie trys homework"
 format: html
 editor: visual
 ---
+
+### Food Bank Markets
+
+What do you predict would be the equilibrium price and quantity of peanut butter that would be traded?
+
+$P = 500 - 0.1Q$
+
+$P = 5 + 0.05Q$
+
+$5 + 0.05Q = 500 - 0.1Q$
+
+$Q*$ = **3300 jars of peanut butter**
+
+$P = 5 + 0.05(3300)$
+
+$P*$ = **170 credits per jar**
+
+How would you measure the benefit of the new market to food banks that buy peanut butter? How would you measure the benefit of the new market to food banks that sell peanut butter?
+
+Calculate the consumer surplus and producer surplus by finding the area under the curve????
+
