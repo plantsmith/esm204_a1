@@ -212,6 +212,7 @@ ggplot(demand_df, aes(y = P))+
        y = "Quantity (jars)") +
   theme_minimal()
 ```
+
 ```{r}
 # add the flipped demand functions to get an aggregate demand function
 ag_demand <- function(P, a1, b1, a3, b3){
