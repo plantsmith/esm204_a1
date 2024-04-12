@@ -54,14 +54,10 @@ $Q*$ = **436.59 jars of peanut butter**
 
 $P*$ = **26.82 credits per jar**
 
-Suppose that each jar of peanut butter that is traded generates carbon emissions due to
-fossil fuel intensive transport. This is called an “externality” and we will study them in
-detail throughout the course. Qualitatively, do you think this information should change
-the amount of peanut butter traded by food banks?
+Suppose that each jar of peanut butter that is traded generates carbon emissions due to fossil fuel intensive transport. This is called an “externality” and we will study them in detail throughout the course. Qualitatively, do you think this information should change the amount of peanut butter traded by food banks?
 
 yes?
 
-				
 ```{r}
 # define the demand and supply functions
 demand <- function(Q, a1, b1){
@@ -156,10 +152,8 @@ ag_s <- function(P, Q, a1, b1, a2, b2, a3, b3){
 P_star_new <- fzero(ag_demand, c(0,500))
 Q_star_new <- supply(P_star_new[[1]], 0.05, 5)
 ```
-					
 
-Using R to solve more complicated supply and demand problems: 
-Old cars are often fuel inefficient. The supply of inefficient old cars on the used carmarket is given by: P = 200 + 0.2Q ^ 1.2 (where P is dollar/car and Q is the quantity of cars). The state of California offers a “cash for clunkers” program, where they will pay $2,000 for any inefficient old car. Answer the following questions:
+a\) Using R to solve more complicated supply and demand problems: Old cars are often fuel inefficient. The supply of inefficient old cars on the used carmarket is given by: P = 200 + 0.2Q \^ 1.2 (where P is dollar/car and Q is the quantity of cars). The state of California offers a “cash for clunkers” program, where they will pay \$2,000 for any inefficient old car. Answer the following questions:
 
 ```{r}
 ### Write functions
@@ -175,8 +169,18 @@ car_demand <- function(Q) {
 }
 ```
 
-i. Use R to determine how many cars will be sold back to the state under this program (you can round to the nearest integer).
+i.  Use R to determine how many cars will be sold back to the state under this program (you can round to the nearest integer)
 
-```{r}
-			
+ii.  Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.
 
+iii. What are the benefits of this policy to owners of old cars?
+
+iv. What is the cost of this program to taxpayers (who fund the government
+
+    payments)?
+
+b\) Suppose the marginal benefit to society of removing old cars (this benefit comes from the environmental and health effects of removing fuel inefficient cars from the road) is given by: MB = 1000 – .01Q1.2 (where Q is the number of cars bought back under the program).
+
+i\. Use R to find the socially optimal number of cars to remove (again, you can round to the nearest integer).
+
+ii\. Use R to find the optimal “cash for clunkers” price (which may differ from the current price of \$2,000).

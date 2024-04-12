@@ -173,7 +173,6 @@ Q_star <- fzero(ds, c(0,5000))
 P_star <- demand(Q_star[[1]], -0.1, 500)
 print(c(Q_star[[1]], P_star))
 ```
-
 The predicted equilibrium price of peanut butter is 170 credits per jar and the predicted equilibrium quantity is 3,300 jars.
 
 b)  What is the benefit of the new market to food banks that buy peanut butter? What is the benefit of the new market to food banks that sell peanut butter?
