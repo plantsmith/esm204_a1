@@ -224,17 +224,19 @@ demand_df <- data.frame(P = 0:500,
   mutate(ag_demand = sum(flip_demand,new_demand,na.rm=TRUE))
 
 #plot demand_df
+colors <- c("Original Demand" = "red", "New Demand" = "blue", "Aggregate Demand" = "green", "Supply" = "pink")
 ggplot(demand_df, aes(y = P))+
   geom_line(aes(x = flip_demand, color = "Original Demand")) +
   geom_line(aes(x = new_demand, color = "New Demand")) +
   geom_line(aes(x = ag_demand, color = "Aggregate Demand")) +
   geom_line(aes(x = supply, color = "Supply")) +
+  geom_point(aes(x = 3300, y = 170), size = 1) +
+  geom_point(aes(x = 3375.41, y = 173.7705), size = 1) +
   labs(title = "Aggregate Demand for Peanut Butter",
        x = "Price (credits per jar)",
        y = "Quantity (jars)",
        color = "Legend") +
-  scale_color_manual(values = c("red", "blue", "green", "pink"),
-                     labels = c("Original Demand", "New Demand", "Aggregate Demand", "Supply")) +
+  scale_color_manual(values = colors) +
   scale_x_continuous(limits = c(0, 6000)) +
   theme_minimal()
 ```
