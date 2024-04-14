@@ -171,7 +171,7 @@ car_demand <- function(Q) {
 
 i.  Use R to determine how many cars will be sold back to the state under this program (you can round to the nearest integer)
 
-ii.  Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.
+ii. Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.
 
 iii. What are the benefits of this policy to owners of old cars?
 

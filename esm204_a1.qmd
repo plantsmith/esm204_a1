@@ -20,6 +20,7 @@ library(tidyverse)
 library(kableExtra)
 library(stats)
 library(pracma)
+library(numDeriv)
 ```
 
 ### Basics of R:
@@ -48,12 +49,12 @@ custom_function(5, 3, 10)
 
 ```
 
-c)  Build a dataframe. Your dataframe is going to call your function from above. We are going to fix a=3 and b=10, and we would like the dataframe to evaluate the function for integer values of X between 0 and 10. The columns of your dataframe should be: a, b, X, and Y. Print the resulting datafram
+c)  Build a dataframe. Your dataframe is going to call your function from above. We are going to fix a=3 and b=10, and we would like the dataframe to evaluate the function for integer values of X between 0 and 10. The columns of your dataframe should be: a, b, X, and Y. Print the resulting dataframe
 
 ```{r}
 # create a dataframe with columns a, b, X, and Y
 df <- data.frame(a = 3, b = 10, X = 0:10, Y = custom_function(0:10, 3, 10))
-print(df)
+# print(df)
 
 # Generate the kable table 
 kable_table <- kable(df) %>%
@@ -169,15 +170,18 @@ ds <- function(Q, a1, b1, a2, b2){
 }
 
 # use fzero to find the equilibrium price and quantity of peanut butter that would be traded
-Q_star <- fzero(ds, c(0,5000))
-P_star <- demand(Q_star[[1]], -0.1, 500)
-print(c(Q_star[[1]], P_star))
+Q_star <- fzero(ds, c(0,5000))$x
+P_star <- demand(Q_star, -0.1, 500)
+print(c(Q_star, P_star))
 ```
+
 The predicted equilibrium price of peanut butter is 170 credits per jar and the predicted equilibrium quantity is 3,300 jars.
 
 b)  What is the benefit of the new market to food banks that buy peanut butter? What is the benefit of the new market to food banks that sell peanut butter?
 
-COME BACK TO THIS !!!!!!!! The benefit of the new market to food banks that buy peanut butter
+The benefit of the new market to the food banks that buy peanut butter is the consumer surplus. $1/2*3300*330$ = **544,500 credits per jar**
+
+The benefit of the new market to the food banks that sell peanut butter is the producer surplus. $1/2*3300*165$ = **272,250 credits per jar**
 
 c)  A very large new food bank in New York City enters the market, with an individual demand for peanut butter given by P = 400 - 2Q. Draw the new aggregate demand curve in this market. What is the new equilibrium price?
 
@@ -194,8 +198,17 @@ new_demand <- function(P, a3, b3){
   return(Q)
 }
 
+# define the flip supply function
+flip_supply <- function(P, a4, b4){
+  Q <- a4*P + b4
+  return(Q)
+}
+
 # make a data frame with the demand and aggregate demand functions
-demand_df <- data.frame(P = 0:500, flip_demand = flip_demand(0:500, -10, 5000), new_demand = new_demand(0:500,-.5, 200)) %>% 
+demand_df <- data.frame(P = 0:500, 
+                        flip_demand = flip_demand(0:500, -10, 5000), 
+                        new_demand = new_demand(0:500,-.5, 200), 
+                        supply=flip_supply(0:500,20,-100)) %>% 
     mutate(new_demand=case_when(P>400~NA,
                               P<=400~new_demand)) %>% 
   rowwise() %>% 
@@ -206,6 +219,7 @@ ggplot(demand_df, aes(y = P))+
   geom_line(aes(x = flip_demand), color = "red") +
   geom_line(aes(x = new_demand), color = "blue") +
   geom_line(aes(x = ag_demand), color = "green") +
+  geom_line(aes(x = supply), color = "pink")+
   labs(title = "Aggregate Demand for Peanut Butter",
        x = "Price (credits per jar)",
        y = "Quantity (jars)") +
@@ -236,18 +250,19 @@ ag_s <- function(P, Q, a1, b1, a2, b2, a3, b3){
 }
 
 # use fzero to find the new equilibrium price
-Q_star_new <- fzero(ag_demand, c(0,500))
-P_star_new <- supply(Q_star_new[[1]], 0.05, 5)
+Q_star_new <- fzero(ag_demand, c(0,500))$x
+P_star_new <- supply(Q_star_new, 0.05, 5)
 ```
 
 d\) Suppose that each jar of peanut butter that is traded generates carbon emissions due to fossil fuel intensive transport. This is called an “externality” and we will study them in detail throughout the course. Qualitatively, do you think this information should change the amount of peanut butter traded by food banks?
 
+The presence of carbon emissions due to fossil fuel intensive transportpeanut suggests that there are additional costs beyond the market price of the product. These costs, in the form of environmental harm, are not reflected in the price of peanut butter. It depends on whether there is an intervention in the market that makes the companies have to consider the external cost.
+
 ### Using R to solve more complicated supply and demand problems:
 
-a\) Old cars are often fuel inefficient. The supply of inefficient old cars on the used carmarket is given by: P = 200 + 0.2Q \^ 1.2 (where P is dollar/car and Q is the quantity of cars). The state of California offers a “cash for clunkers” program, where they will pay \$2,000 for any inefficient old car. Answer the following questions:
+a\) Old cars are often fuel inefficient. The supply of inefficient old cars on the used car market is given by: P = 200 + 0.2Q \^ 1.2 (where P is dollar/car and Q is the quantity of cars). The state of California offers a “cash for clunkers” program, where they will pay \$2,000 for any inefficient old car. Answer the following questions:
 
 ```{r}
-
 ### Write functions
 
 car_supply <- function(Q) {
@@ -263,13 +278,30 @@ car_demand <- function(Q) {
 
 i.  Use R to determine how many cars will be sold back to the state under this program (you can round to the nearest integer)
 
-ii.  Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.
+```{r}
+f_diff <- function(Q) {
+  z=car_supply(Q)-car_demand(Q)
+  return(z)
+}
 
-iii. What are the benefits of this policy to owners of old cars?
+q_star_cars <- fzero(f_diff, c(0, 10000))$x
+p_star_cars <-car_supply(q_star_cars)
 
-iv. What is the cost of this program to taxpayers (who fund the government
+print(q_star_cars)
+```
 
-    payments)?
+i.  Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.
+
+    ```{r}
+    #calculate 
+
+    ```
+
+ii. What are the benefits of this policy to owners of old cars?
+
+iii. What is the cost of this program to taxpayers (who fund the government
+
+     payments)?
 
 b\) Suppose the marginal benefit to society of removing old cars (this benefit comes from the environmental and health effects of removing fuel inefficient cars from the road) is given by: MB = 1000 – .01Q1.2 (where Q is the number of cars bought back under the program).
 
