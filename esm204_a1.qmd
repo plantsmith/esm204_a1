@@ -23,9 +23,9 @@ library(pracma)
 library(numDeriv)
 ```
 
-### Basics of R:
+### Basics of R
 
-a)  Launch RStudio and start a new R script (or markdown document, up to you!). Write a simple program that counts from 1 to 10 by increments of 0.5. Print out the results.
+a)  *Launch RStudio and start a new R script (or markdown document, up to you!). Write a simple program that counts from 1 to 10 by increments of 0.5. Print out the results.*
 
 ```{r}
 # Count from 1 to 10 by increments of 0.5
@@ -35,7 +35,7 @@ count <- seq(from = 1, to = 10, by = 0.5)
 print(count)
 ```
 
-b)  Write a custom function. Your function should have three inputs (X, a, and b) and one output (Y). The function should calculate Y = aX + b. Once you have created it, call your function for the values X=5, b=10, and a=3. What value of Y did you get? Confirm algebraically that it is correct.
+b)  *Write a custom function. Your function should have three inputs (X, a, and b) and one output (Y). The function should calculate Y = aX + b. Once you have created it, call your function for the values X=5, b=10, and a=3. What value of Y did you get? Confirm algebraically that it is correct.*
 
 ```{r}
 # write a custom function with three inputs (X,a,b) and one output (Y). The function should calculate Y = aX + b.
@@ -49,7 +49,11 @@ custom_function(5, 3, 10)
 
 ```
 
-c)  Build a dataframe. Your dataframe is going to call your function from above. We are going to fix a=3 and b=10, and we would like the dataframe to evaluate the function for integer values of X between 0 and 10. The columns of your dataframe should be: a, b, X, and Y. Print the resulting dataframe
+Confirming algebraically that the value of Y is correct: $$
+y = 5*3+10 = 25
+$$
+
+c)  *Build a dataframe. Your dataframe is going to call your function from above. We are going to fix a=3 and b=10, and we would like the dataframe to evaluate the function for integer values of X between 0 and 10. The columns of your dataframe should be: a, b, X, and Y. Print the resulting dataframe.*
 
 ```{r}
 # create a dataframe with columns a, b, X, and Y
@@ -64,7 +68,7 @@ kable_table
 
 ```
 
-d)  Plot using your dataframe. Use ggplot to plot Y (vertical axis) against X (horizontal axis) from your dataframe.
+d)  *Plot using your dataframe. Use ggplot to plot Y (vertical axis) against X (horizontal axis) from your dataframe.*
 
 ```{r}
 # plot Y (vertical axis) against X (horizontal axis) from the dataframe
@@ -78,15 +82,15 @@ ggplot(df, aes(x = X, y = Y)) +
 
 ```
 
-e)  Find the intersection of two curves. Use the function fzero (from the pracma package) or uniroot (from the stats package) to find where two curves cross. The two curves are:
+e)  *Find the intersection of two curves. Use the function fzero (from the pracma package) or uniroot (from the stats package) to find where two curves cross. The two curves are:*
 
-(1)Y=a1X+b1
+*(1)Y=a1X+b1*
 
-(2)Y=a2X+b2.
+*(2)Y=a2X+b2.*
 
-For any values of a1,b1,a2,and b2, we want to know the value of X and Y where these functions cross. To achieve this, follow these steps.
+*For any values of a1,b1,a2,and b2, we want to know the value of X and Y where these functions cross. To achieve this, follow these steps.*
 
-i)  Write a function called fun1 that takes X, a1, and b1 as inputs and delivers Y=a1X + b1 as the output. This is almost exactly the same as in part (b) above.
+i)  *Write a function called fun1 that takes X, a1, and b1 as inputs and delivers Y=a1X + b1 as the output. This is almost exactly the same as in part (b) above.*
 
 ```{r}
 fun1 <- function(X, a1, b1){
@@ -95,7 +99,7 @@ fun1 <- function(X, a1, b1){
 }
 ```
 
-ii) Write a different function called fun2 that takes X, a2, and b2 as inputs and delivers Y=a2X + b2 as the output.
+ii) *Write a different function called fun2 that takes X, a2, and b2 as inputs and delivers Y=a2X + b2 as the output.*
 
 ```{r}
 fun2 <- function(X, a2, b2){
@@ -104,7 +108,7 @@ fun2 <- function(X, a2, b2){
 }
 ```
 
-iii) Write a third function fun3 that takes the following inputs: X, a1, b1, a2, and b2. This new function will call the existing fun1 and fun2. The output is Z=fun1-fun2 (in other words, for any value of X, Z is the difference between the output of the two functions).
+iii) *Write a third function fun3 that takes the following inputs: X, a1, b1, a2, and b2. This new function will call the existing fun1 and fun2. The output is Z=fun1-fun2 (in other words, for any value of X, Z is the difference between the output of the two functions).*
 
 ```{r}
 fun3 <- function(X, a1, b1, a2, b2){
@@ -117,7 +121,7 @@ fun3 <- function(X, a1, b1, a2, b2){
 }
 ```
 
-iv) Use fzero to find the value X\* where the two curves intersect, for the following values of the parameters: a1=-2, b1=100, a2=3, b2=0.2 What is the value of Y\*, the value of Y when the curves intersect?
+iv) *Use fzero to find the value X\* where the two curves intersect, for the following values of the parameters: a1=-2, b1=100, a2=3, b2=0.2 What is the value of Y\*, the value of Y when the curves intersect?*
 
 ```{r}
 # use fzero to find the value X* where the two curves intersect
@@ -125,9 +129,10 @@ X_star <- fzero(fun3, c(0,50))
 
 # find the value of Y* when the curves intersect
 Y_star <- fun1(X_star[[1]], -2, 100)
+print(Y_star)
 ```
 
-f)  Use algebra to confirm that your answer to (e) is correct.
+f)  *Use algebra to confirm that your answer to (e) is correct.*
 
 $$
 y = -2x + 100 = 3x + 0.2
@@ -139,13 +144,15 @@ $$
 
 $$
 x = 19.96
-$$ $$
+$$
+
+$$
 y = -2(19.96) + 100 = 60.08
 $$
 
 ### Food Bank Markets
 
-a)  Recall the NPR story, where food banks around the country can buy and sell surplus food in a new kind of market. Consider the supply and demand for peanut butter (the story indicated that it is particularly valuable in this market). In this market there are food banks who have surplus peanut butter and food banks that want more peanut butter. The currency is “credits” (not “dollars”). The demand curve for peanut butter is given by P = 500 - .1Q (where P has units “credits per jar” and Q has units “jars” of peanut butter). The supply of peanut butter is P = 5 + .05Q. What do you predict would be the equilibrium price and quantity of peanut butter that would be traded?
+a)  *Recall the NPR story, where food banks around the country can buy and sell surplus food in a new kind of market. Consider the supply and demand for peanut butter (the story indicated that it is particularly valuable in this market). In this market there are food banks who have surplus peanut butter and food banks that want more peanut butter. The currency is “credits” (not “dollars”). The demand curve for peanut butter is given by P = 500 - .1Q (where P has units “credits per jar” and Q has units “jars” of peanut butter). The supply of peanut butter is P = 5 + .05Q. What do you predict would be the equilibrium price and quantity of peanut butter that would be traded?*
 
 ```{r}
 # define the demand and supply functions
@@ -177,13 +184,13 @@ print(c(Q_star, P_star))
 
 The predicted equilibrium price of peanut butter is 170 credits per jar and the predicted equilibrium quantity is 3,300 jars.
 
-b)  What is the benefit of the new market to food banks that buy peanut butter? What is the benefit of the new market to food banks that sell peanut butter?
+b)  *What is the benefit of the new market to food banks that buy peanut butter? What is the benefit of the new market to food banks that sell peanut butter?*
 
 The benefit of the new market to the food banks that buy peanut butter is the consumer surplus. $1/2*3300*330$ = **544,500 credits per jar**
 
 The benefit of the new market to the food banks that sell peanut butter is the producer surplus. $1/2*3300*165$ = **272,250 credits per jar**
 
-c)  A very large new food bank in New York City enters the market, with an individual demand for peanut butter given by P = 400 - 2Q. Draw the new aggregate demand curve in this market. What is the new equilibrium price?
+c)  *A very large new food bank in New York City enters the market, with an individual demand for peanut butter given by P = 400 - 2Q. Draw the new aggregate demand curve in this market. What is the new equilibrium price?*
 
 ```{r}
 #flip the original demand function
@@ -216,55 +223,61 @@ demand_df <- data.frame(P = 0:500,
 
 #plot demand_df
 ggplot(demand_df, aes(y = P))+
-  geom_line(aes(x = flip_demand), color = "red") +
-  geom_line(aes(x = new_demand), color = "blue") +
-  geom_line(aes(x = ag_demand), color = "green") +
-  geom_line(aes(x = supply), color = "pink")+
+  geom_line(aes(x = flip_demand, color = "Original Demand")) +
+  geom_line(aes(x = new_demand, color = "New Demand")) +
+  geom_line(aes(x = ag_demand, color = "Aggregate Demand")) +
+  geom_line(aes(x = supply, color = "Supply")) +
   labs(title = "Aggregate Demand for Peanut Butter",
        x = "Price (credits per jar)",
-       y = "Quantity (jars)") +
+       y = "Quantity (jars)",
+       color = "Legend") +
+  scale_color_manual(values = c("red", "blue", "green", "pink"),
+                     labels = c("Original Demand", "New Demand", "Aggregate Demand", "Supply")) +
+  scale_x_continuous(limits = c(0, 6000)) +
   theme_minimal()
 ```
 
 ```{r}
-# add the flipped demand functions to get an aggregate demand function
-ag_demand <- function(P, a1, b1, a3, b3){
-  a1 <- -10
-  b1 <- 5000
-  a3 <- -.5
-  b3 <- 200
-  Z <- flip_demand(P,a1, b1) + new_demand(P, a3, b3)
-  return(Z)
-}
-
-# difference between aggregate demand and supply
-ag_s <- function(P, Q, a1, b1, a2, b2, a3, b3){
-  a1 <- -10
-  b1 <- 5000
-  a2 <- 3
-  b2 <- 0.2
-  a3 <- -.5
-  b3 <- 200
-  Z <- ag_demand(P, a1, b1, a3, b3) - supply(Q, a2, b2)
-  return(Z)
-}
-
-# use fzero to find the new equilibrium price
-Q_star_new <- fzero(ag_demand, c(0,500))$x
-P_star_new <- supply(Q_star_new, 0.05, 5)
+# NOT IN USE
+# # add the flipped demand functions to get an aggregate demand function
+# ag_demand <- function(P, a1, b1, a3, b3){
+#   a1 <- -10
+#   b1 <- 5000
+#   a3 <- -.5
+#   b3 <- 200
+#   Z <- flip_demand(P,a1, b1) + new_demand(P, a3, b3)
+#   return(Z)
+# }
+# 
+# # difference between aggregate demand and supply
+# ag_s <- function(P, Q, a1, b1, a2, b2, a3, b3){
+#   a1 <- -10
+#   b1 <- 5000
+#   a2 <- 3
+#   b2 <- 0.2
+#   a3 <- -.5
+#   b3 <- 200
+#   Z <- ag_demand(P, a1, b1, a3, b3) - supply(Q, a2, b2)
+#   return(Z)
+# }
+# 
+# # use fzero to find the new equilibrium price
+# Q_star_new <- fzero(ag_demand, c(0,500))$x
+# P_star_new <- supply(Q_star_new, 0.05, 5)
 ```
 
-d\) Suppose that each jar of peanut butter that is traded generates carbon emissions due to fossil fuel intensive transport. This is called an “externality” and we will study them in detail throughout the course. Qualitatively, do you think this information should change the amount of peanut butter traded by food banks?
+The new equilibrium price is 173.77 credits per jar.
 
-The presence of carbon emissions due to fossil fuel intensive transportpeanut suggests that there are additional costs beyond the market price of the product. These costs, in the form of environmental harm, are not reflected in the price of peanut butter. It depends on whether there is an intervention in the market that makes the companies have to consider the external cost.
+*d) Suppose that each jar of peanut butter that is traded generates carbon emissions due to fossil fuel intensive transport. This is called an “externality” and we will study them in detail throughout the course. Qualitatively, do you think this information should change the amount of peanut butter traded by food banks?*
+
+The presence of carbon emissions due to fossil fuel intensive transport of peanut butter suggests that there are additional costs beyond the market price of the product. These costs, in the form of environmental harm, are not reflected in the price of peanut butter. It depends on whether there is an intervention in the market that makes the companies have to consider the external cost.
 
 ### Using R to solve more complicated supply and demand problems:
 
-a\) Old cars are often fuel inefficient. The supply of inefficient old cars on the used car market is given by: P = 200 + 0.2Q \^ 1.2 (where P is dollar/car and Q is the quantity of cars). The state of California offers a “cash for clunkers” program, where they will pay \$2,000 for any inefficient old car. Answer the following questions:
+*a) Old cars are often fuel inefficient. The supply of inefficient old cars on the used car market is given by: P = 200 + 0.2Q \^ 1.2 (where P is dollar/car and Q is the quantity of cars). The state of California offers a “cash for clunkers” program, where they will pay \$2,000 for any inefficient old car. Answer the following questions:*
 
 ```{r}
 ### Write functions
-
 car_supply <- function(Q) {
   P <-  200 + (0.2*(Q^1.2))
   return(P)
@@ -276,37 +289,70 @@ car_demand <- function(Q) {
 }
 ```
 
-i.  Use R to determine how many cars will be sold back to the state under this program (you can round to the nearest integer)
+i.  *Use R to determine how many cars will be sold back to the state under this program (you can round to the nearest integer)*
 
 ```{r}
+# find difference between supply and demand functions
 f_diff <- function(Q) {
   z=car_supply(Q)-car_demand(Q)
   return(z)
 }
 
+# find q_star and p_star for market equilibrium
 q_star_cars <- fzero(f_diff, c(0, 10000))$x
 p_star_cars <-car_supply(q_star_cars)
 
+# print number of cars
 print(q_star_cars)
 ```
 
-i.  Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.
+ii. *Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.*
 
-    ```{r}
+```{r}
 #calculate the derivative of the supply function Q=5P-1000^5/6
-  
-flipped_supply=expression((5p-1000)^5/6)
+# put supply in terms of p  
+flipped_supply=expression((5*p-1000)^(5/6))
+# take derivative
+supp_derivative <- D(flipped_supply,'p')
+# multiply derivative by p/q at market equilibrium to get elasticity
+p <- 2000
+print(eval(supp_derivative)*(2000/1973))
+```
 
-    ```
+iii. *What are the benefits of this policy to owners of old cars?*
 
-ii. What are the benefits of this policy to owners of old cars?
+The benefits of this policy to owners of old cars are that they can get rid of their old cars and receive a payment of \$2,000 for each car.
 
-iii. What is the cost of this program to taxpayers (who fund the government
+iv. *What is the cost of this program to taxpayers (who fund the government payments)?*
 
-     payments)?
+The cost of this program to taxpayers is the total number of cars bought back multiplied by the payment per car. Specifically, the cost is \$2,000 per car times 1,973 cars bought back = \$3,946,000. The taxpayers are paying for the program even though they may not individually take advantage of the buy back program.
 
-b\) Suppose the marginal benefit to society of removing old cars (this benefit comes from the environmental and health effects of removing fuel inefficient cars from the road) is given by: MB = 1000 – .01Q1.2 (where Q is the number of cars bought back under the program).
+*b) Suppose the marginal benefit to society of removing old cars (this benefit comes from the environmental and health effects of removing fuel inefficient cars from the road) is given by: MB = 1000 – .01Q1.2 (where Q is the number of cars bought back under the program).*
 
-i\. Use R to find the socially optimal number of cars to remove (again, you can round to the nearest integer).
+*i. Use R to find the socially optimal number of cars to remove (again, you can round to the nearest integer).*
 
-ii\. Use R to find the optimal “cash for clunkers” price (which may differ from the current price of \$2,000).
+```{r}
+# define the marginal benefit function
+marginal_benefit <- function(Q){
+  MB <- 1000 - 0.01*(Q^1.2)
+  return(MB)
+}
+
+# define the difference between the marginal benefit and the supply function
+diff <- function(Q){
+  Z <- marginal_benefit(Q) - car_supply(Q)
+  return(Z)
+}
+
+# use fzero to find the socially optimal number of cars to remove
+Q_star_social_opt <- fzero(diff, c(0, 10000))$x
+print(Q_star_social_opt)
+```
+
+ii\. *Use R to find the optimal “cash for clunkers” price (which may differ from the current price of \$2,000).*
+
+```{r}
+# using the socially optimal number of cars, calculate the optimal price
+P_star_social_opt <- car_supply(Q_star_social_opt)
+print(P_star_social_opt)
+```
