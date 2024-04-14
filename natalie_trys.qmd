@@ -44,7 +44,7 @@ Ag demand:
 
 $P=(500 - 0.1Q)+(400 - 2Q)$
 
-$P=-2Q +900$
+$P=-2Q+900$
 
 New new equilibrium price:
 

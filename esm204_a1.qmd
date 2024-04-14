@@ -295,7 +295,7 @@ i.  Use R to calculate the elasticity of supply of inefficient cars, evaluated a
     ```{r}
 #calculate the derivative of the supply function Q=5P-1000^5/6
   
-flipped_supply=expression((5p-1000)^5/6)
+flipped_supply=expression((5*p-1000)^(5/6))
 
     ```
 
