@@ -51,7 +51,8 @@ custom_function(5, 3, 10)
 
 ```
 
-Confirming algebraically that the value of Y is correct: $$
+Confirming algebraically that the value of Y is correct: 
+$$
 y = 5*3+10 = 25
 $$
 
@@ -81,7 +82,6 @@ ggplot(df, aes(x = X, y = Y)) +
        x = "X",
        y = "Y") +
   theme_minimal()
-
 ```
 
 e)  *Find the intersection of two curves. Use the function fzero (from the pracma package) or uniroot (from the stats package) to find where two curves cross. The two curves are:*
@@ -195,7 +195,7 @@ The benefit of the new market to the food banks that sell peanut butter is the p
 c)  *A very large new food bank in New York City enters the market, with an individual demand for peanut butter given by P = 400 - 2Q. Draw the new aggregate demand curve in this market. What is the new equilibrium price?*
 
 ```{r}
-#flip the original demand function
+#flip the original demand function to be q in terms of p
 flip_demand <- function(P, a1, b1){
   Q <- a1*P + b1
   return(Q)
@@ -207,67 +207,38 @@ new_demand <- function(P, a3, b3){
   return(Q)
 }
 
-# define the flip supply function
+# define the flipped supply function (q in terms of p)
 flip_supply <- function(P, a4, b4){
   Q <- a4*P + b4
   return(Q)
 }
 
-# make a data frame with the demand and aggregate demand functions
+# make a data frame with the demand and aggregate demand functions, for all P integer inputs
 demand_df <- data.frame(P = 0:500, 
                         flip_demand = flip_demand(0:500, -10, 5000), 
                         new_demand = new_demand(0:500,-.5, 200), 
-                        supply=flip_supply(0:500,20,-100)) %>% 
-    mutate(new_demand=case_when(P>400~NA,
-                              P<=400~new_demand)) %>% 
-  rowwise() %>% 
-  mutate(ag_demand = sum(flip_demand,new_demand,na.rm=TRUE))
+                        supply = flip_supply(0:500,20,-100)) %>% 
+             mutate(new_demand = case_when(P > 400 ~ NA,
+                                           P <= 400 ~ new_demand)) %>% 
+             rowwise() %>% 
+             mutate(ag_demand = sum(flip_demand, new_demand, na.rm=TRUE))
 
-#plot demand_df
-colors <- c("Original Demand" = "red", "New Demand" = "blue", "Aggregate Demand" = "green", "Supply" = "pink")
+#plot demand_df, showing lines for original demand, new demand, aggregate demand, and supply
+colors <- c("Original Demand" = "dodgerblue", "New Demand" = "deepskyblue", "Aggregate Demand" = "dodgerblue4", "Supply" = "deeppink3")
 ggplot(demand_df, aes(y = P))+
   geom_line(aes(x = flip_demand, color = "Original Demand")) +
   geom_line(aes(x = new_demand, color = "New Demand")) +
   geom_line(aes(x = ag_demand, color = "Aggregate Demand")) +
   geom_line(aes(x = supply, color = "Supply")) +
-  geom_point(aes(x = 3300, y = 170), size = 1) +
-  geom_point(aes(x = 3375.41, y = 173.7705), size = 1) +
-  labs(title = "Aggregate Demand for Peanut Butter",
-       x = "Price (credits per jar)",
-       y = "Quantity (jars)",
+  geom_point(aes(x = 3375.41, y = 173.7705), size = 1.5) +
+  geom_text(aes(x = 3375.41, y = 173.7705, label = "New Equilibrium"), size = 3.5, hjust = -0.1, vjust = 0.5, check_overlap = TRUE) +
+  labs(title = "Supply and Demand for Peanut Butter",
+       y = "Price (credits per jar)",
+       x = "Quantity (jars)",
        color = "Legend") +
   scale_color_manual(values = colors) +
-  scale_x_continuous(limits = c(0, 6000)) +
+  scale_x_continuous(limits = c(0, 5500)) +
   theme_minimal()
-```
-
-```{r}
-# NOT IN USE
-# # add the flipped demand functions to get an aggregate demand function
-# ag_demand <- function(P, a1, b1, a3, b3){
-#   a1 <- -10
-#   b1 <- 5000
-#   a3 <- -.5
-#   b3 <- 200
-#   Z <- flip_demand(P,a1, b1) + new_demand(P, a3, b3)
-#   return(Z)
-# }
-# 
-# # difference between aggregate demand and supply
-# ag_s <- function(P, Q, a1, b1, a2, b2, a3, b3){
-#   a1 <- -10
-#   b1 <- 5000
-#   a2 <- 3
-#   b2 <- 0.2
-#   a3 <- -.5
-#   b3 <- 200
-#   Z <- ag_demand(P, a1, b1, a3, b3) - supply(Q, a2, b2)
-#   return(Z)
-# }
-# 
-# # use fzero to find the new equilibrium price
-# Q_star_new <- fzero(ag_demand, c(0,500))$x
-# P_star_new <- supply(Q_star_new, 0.05, 5)
 ```
 
 The new equilibrium price is 173.77 credits per jar.
@@ -276,7 +247,7 @@ The new equilibrium price is 173.77 credits per jar.
 
 The presence of carbon emissions due to fossil fuel intensive transport of peanut butter suggests that there are additional costs beyond the market price of the product. These costs, in the form of environmental harm, are not reflected in the price of peanut butter. It depends on whether there is an intervention in the market that makes the companies have to consider the external cost.
 
-### Using R to solve more complicated supply and demand problems:
+### More Complicated Supply and Demand
 
 *a) Old cars are often fuel inefficient. The supply of inefficient old cars on the used car market is given by: P = 200 + 0.2Q \^ 1.2 (where P is dollar/car and Q is the quantity of cars). The state of California offers a “cash for clunkers” program, where they will pay \$2,000 for any inefficient old car. Answer the following questions:*
 
@@ -313,12 +284,12 @@ print(q_star_cars)
 ii. *Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.*
 
 ```{r}
-#calculate the derivative of the supply function Q=5P-1000^5/6
-
 # put supply in terms of p  
 flipped_supply=expression((5*p-1000)^(5/6))
+
 # take derivative
 supp_derivative <- D(flipped_supply,'p')
+
 # multiply derivative by p/q at market equilibrium to get elasticity
 p <- 2000
 print(eval(supp_derivative)*(2000/1973))
@@ -353,6 +324,7 @@ diff <- function(Q){
 Q_star_social_opt <- fzero(diff, c(0, 10000))$x
 print(Q_star_social_opt)
 ```
+The socially optimal number of cars to remove is 964.
 
 ii\. *Use R to find the optimal “cash for clunkers” price (which may differ from the current price of \$2,000).*
 
@@ -361,3 +333,4 @@ ii\. *Use R to find the optimal “cash for clunkers” price (which may differ 
 P_star_social_opt <- car_supply(Q_star_social_opt)
 print(P_star_social_opt)
 ```
+The optimal "cash for clunkers" price is \$961.90
