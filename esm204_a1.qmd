@@ -63,8 +63,9 @@ df <- data.frame(a = 3, b = 10, X = 0:10, Y = custom_function(0:10, 3, 10))
 # print(df)
 
 # Generate the kable table 
-kable_table <- kable(df) %>%
-  kable_styling()
+kable_table <- df %>%
+  kable() %>%
+  kable_styling
 
 kable_table
 
@@ -126,10 +127,10 @@ iv) *Use fzero to find the value X\* where the two curves intersect, for the fol
 
 ```{r}
 # use fzero to find the value X* where the two curves intersect
-X_star <- fzero(fun3, c(0,50))
+X_star <- fzero(fun3, c(0,50))$x
 
 # find the value of Y* when the curves intersect
-Y_star <- fun1(X_star[[1]], -2, 100)
+Y_star <- fun1(X_star, -2, 100)
 print(Y_star)
 ```
 
@@ -183,7 +184,7 @@ P_star <- demand(Q_star, -0.1, 500)
 print(c(Q_star, P_star))
 ```
 
-The predicted equilibrium price of peanut butter is 170 credits per jar and the predicted equilibrium quantity is 3,300 jars.
+The predicted equilibrium price of peanut butter is **170 credits per jar** and the predicted equilibrium quantity is **3,300 jars**.
 
 b)  *What is the benefit of the new market to food banks that buy peanut butter? What is the benefit of the new market to food banks that sell peanut butter?*
 
@@ -194,13 +195,13 @@ The benefit of the new market to the food banks that sell peanut butter is the p
 c)  *A very large new food bank in New York City enters the market, with an individual demand for peanut butter given by P = 400 - 2Q. Draw the new aggregate demand curve in this market. What is the new equilibrium price?*
 
 ```{r}
-#flip the original demand function to be q in terms of p
+#flip the original demand function (q in terms of p)
 flip_demand <- function(P, a1, b1){
   Q <- a1*P + b1
   return(Q)
 }
 
-# define the new demand function
+# define the new demand function (q in terms of p)
 new_demand <- function(P, a3, b3){
   Q <- a3*P + b3
   return(Q)
@@ -218,9 +219,9 @@ demand_df <- data.frame(P = 0:500,
                         new_demand = new_demand(0:500,-.5, 200), 
                         supply = flip_supply(0:500,20,-100)) %>% 
              mutate(new_demand = case_when(P > 400 ~ NA,
-                                           P <= 400 ~ new_demand)) %>% 
+                                           P <= 400 ~ new_demand)) %>%  # in new demand, when anything is greater than 400 it will be NA
              rowwise() %>% 
-             mutate(ag_demand = sum(flip_demand, new_demand, na.rm=TRUE))
+             mutate(ag_demand = sum(flip_demand, new_demand, na.rm=TRUE)) # do not count NAs in sum
 
 #plot demand_df, showing lines for original demand, new demand, aggregate demand, and supply
 colors <- c("Original Demand" = "dodgerblue", "New Demand" = "deepskyblue", "Aggregate Demand" = "dodgerblue4", "Supply" = "deeppink3")
@@ -242,49 +243,37 @@ ggplot(demand_df, aes(y = P))+
 
 We calculated the new equilibrium price algebraically. First, we rewrote the original demand function for Q in terms of P: $$
 P = 500 - 0.1Q
-$$ 
+$$
 
 $$
 P - 500 = -0.1Q
-$$
-$$
+$$ $$
 Q = 5000 - 10P
-$$
-Then, we rewrote the new demand function for Q in terms of P:
-$$
+$$ Then, we rewrote the new demand function for Q in terms of P: $$
 P = 400 - 2Q
-$$
-$$
+$$ $$
 P - 400 = -2Q
-$$
-$$
+$$ $$
 Q = 200 - 0.5P
 $$
 
-We then added the two demand functions to find the aggregate demand for Q in terms of P:
-$$
+We then added the two demand functions to find the aggregate demand for Q in terms of P: $$
 Q = 5000 - 10P + 200 - 0.5P
-$$
-$$
+$$ $$
 Q = 5200 - 10.5P
-$$
-Expressing supply as Q in terms of P as well:
-$$
+$$ Expressing supply as Q in terms of P as well: $$
 Q = 20P - 100
 $$
 
-We then found the intersection of this aggregate demand line and the supply line by setting the equations equal and solving:
-$$
+We then found the intersection of this aggregate demand line and the supply line by setting the equations equal and solving: $$
 20P - 100 = 5200 - 10.5P
-$$
-$$
+$$ $$
 30.5P = 5300
-$$
-$$
+$$ $$
 P = 173.77
 $$
 
-The new equilibrium price is 173.77 credits per jar.
+The new equilibrium price is **173.77 credits per jar**.
 
 *d) Suppose that each jar of peanut butter that is traded generates carbon emissions due to fossil fuel intensive transport. This is called an “externality” and we will study them in detail throughout the course. Qualitatively, do you think this information should change the amount of peanut butter traded by food banks?*
 
@@ -323,7 +312,8 @@ p_star_cars <-car_supply(q_star_cars)
 # print number of cars
 print(q_star_cars)
 ```
-1,973 cars will be sold back to the state under this program.
+
+**1,973 cars** will be sold back to the state under this program.
 
 ii. *Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.*
 
@@ -375,7 +365,7 @@ Q_star_social_opt <- fzero(diff, c(0, 10000))$x
 print(Q_star_social_opt)
 ```
 
-The socially optimal number of cars to remove is 964.
+The socially optimal number of cars to remove is **964**.
 
 ii\. *Use R to find the optimal “cash for clunkers” price (which may differ from the current price of \$2,000).*
 
@@ -385,4 +375,4 @@ P_star_social_opt <- car_supply(Q_star_social_opt)
 print(P_star_social_opt)
 ```
 
-The optimal "cash for clunkers" price is \$961.90
+The optimal "cash for clunkers" price is **\$961.90**.

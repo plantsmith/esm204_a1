@@ -3460,10 +3460,11 @@ y = 5*3+10 = 25
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># print(df)</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the kable table </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>kable_table <span class="ot">&lt;-</span> <span class="fu">kable</span>(df) <span class="sc">%&gt;%</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>kable_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>kable_table <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  kable_styling</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>kable_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
@@ -3620,10 +3621,10 @@ y = 5*3+10 = 25
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use fzero to find the value X* where the two curves intersect</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X_star <span class="ot">&lt;-</span> <span class="fu">fzero</span>(fun3, <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X_star <span class="ot">&lt;-</span> <span class="fu">fzero</span>(fun3, <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>))<span class="sc">$</span>x</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># find the value of Y* when the curves intersect</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Y_star <span class="ot">&lt;-</span> <span class="fu">fun1</span>(X_star[[<span class="dv">1</span>]], <span class="sc">-</span><span class="dv">2</span>, <span class="dv">100</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Y_star <span class="ot">&lt;-</span> <span class="fu">fun1</span>(X_star, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">100</span>)</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Y_star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -3684,7 +3685,7 @@ y = -2(19.96) + 100 = 60.08
 <pre><code>[1] 3300  170</code></pre>
 </div>
 </div>
-<p>The predicted equilibrium price of peanut butter is 170 credits per jar and the predicted equilibrium quantity is 3,300 jars.</p>
+<p>The predicted equilibrium price of peanut butter is <strong>170 credits per jar</strong> and the predicted equilibrium quantity is <strong>3,300 jars</strong>.</p>
 <ol start="2" type="a">
 <li><em>What is the benefit of the new market to food banks that buy peanut butter? What is the benefit of the new market to food banks that sell peanut butter?</em></li>
 </ol>
@@ -3696,13 +3697,13 @@ y = -2(19.96) + 100 = 60.08
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#flip the original demand function to be q in terms of p</span></span>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#flip the original demand function (q in terms of p)</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>flip_demand <span class="ot">&lt;-</span> <span class="cf">function</span>(P, a1, b1){</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  Q <span class="ot">&lt;-</span> a1<span class="sc">*</span>P <span class="sc">+</span> b1</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(Q)</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># define the new demand function</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># define the new demand function (q in terms of p)</span></span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>new_demand <span class="ot">&lt;-</span> <span class="cf">function</span>(P, a3, b3){</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  Q <span class="ot">&lt;-</span> a3<span class="sc">*</span>P <span class="sc">+</span> b3</span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(Q)</span>
@@ -3720,9 +3721,9 @@ y = -2(19.96) + 100 = 60.08
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>                        <span class="at">new_demand =</span> <span class="fu">new_demand</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">500</span>,<span class="sc">-</span>.<span class="dv">5</span>, <span class="dv">200</span>), </span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>                        <span class="at">supply =</span> <span class="fu">flip_supply</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">500</span>,<span class="dv">20</span>,<span class="sc">-</span><span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">new_demand =</span> <span class="fu">case_when</span>(P <span class="sc">&gt;</span> <span class="dv">400</span> <span class="sc">~</span> <span class="cn">NA</span>,</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>                                           P <span class="sc">&lt;=</span> <span class="dv">400</span> <span class="sc">~</span> new_demand)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>                                           P <span class="sc">&lt;=</span> <span class="dv">400</span> <span class="sc">~</span> new_demand)) <span class="sc">%&gt;%</span>  <span class="co"># in new demand, when anything is greater than 400 it will be NA</span></span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>             <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">ag_demand =</span> <span class="fu">sum</span>(flip_demand, new_demand, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">ag_demand =</span> <span class="fu">sum</span>(flip_demand, new_demand, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="co"># do not count NAs in sum</span></span>
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#plot demand_df, showing lines for original demand, new demand, aggregate demand, and supply</span></span>
 <span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Original Demand&quot;</span> <span class="ot">=</span> <span class="st">&quot;dodgerblue&quot;</span>, <span class="st">&quot;New Demand&quot;</span> <span class="ot">=</span> <span class="st">&quot;deepskyblue&quot;</span>, <span class="st">&quot;Aggregate Demand&quot;</span> <span class="ot">=</span> <span class="st">&quot;dodgerblue4&quot;</span>, <span class="st">&quot;Supply&quot;</span> <span class="ot">=</span> <span class="st">&quot;deeppink3&quot;</span>)</span>
@@ -3773,7 +3774,7 @@ Q = 20P - 100
 \]</span> <span class="math display">\[
 P = 173.77
 \]</span></p>
-<p>The new equilibrium price is 173.77 credits per jar.</p>
+<p>The new equilibrium price is <strong>173.77 credits per jar</strong>.</p>
 <p><em>d) Suppose that each jar of peanut butter that is traded generates carbon emissions due to fossil fuel intensive transport. This is called an “externality” and we will study them in detail throughout the course. Qualitatively, do you think this information should change the amount of peanut butter traded by food banks?</em></p>
 <p>The presence of carbon emissions due to fossil fuel intensive transport of peanut butter suggests that there are additional costs beyond the market price of the product. These costs, in the form of environmental harm, are not reflected in the price of peanut butter. It depends on whether there is an intervention in the market that makes the companies have to consider the external cost.</p>
 </section>
@@ -3818,7 +3819,7 @@ P = 173.77
 <pre><code>[1] 1973.341</code></pre>
 </div>
 </div>
-<p>1,973 cars will be sold back to the state under this program.</p>
+<p><strong>1,973 cars</strong> will be sold back to the state under this program.</p>
 <ol start="2" type="i">
 <li><em>Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.</em></li>
 </ol>
@@ -3883,7 +3884,7 @@ P = 173.77
 <pre><code>[1] 963.9598</code></pre>
 </div>
 </div>
-<p>The socially optimal number of cars to remove is 964.</p>
+<p>The socially optimal number of cars to remove is <strong>964</strong>.</p>
 <p>ii. <em>Use R to find the optimal “cash for clunkers” price (which may differ from the current price of $2,000).</em></p>
 <div class="cell">
 <details>
@@ -3896,7 +3897,7 @@ P = 173.77
 <pre><code>[1] 961.9048</code></pre>
 </div>
 </div>
-<p>The optimal “cash for clunkers” price is $961.90</p>
+<p>The optimal “cash for clunkers” price is <strong>$961.90</strong>.</p>
 </section>
 
 </main>
