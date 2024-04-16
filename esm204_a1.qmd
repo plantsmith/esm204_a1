@@ -51,8 +51,7 @@ custom_function(5, 3, 10)
 
 ```
 
-Confirming algebraically that the value of Y is correct: 
-$$
+Confirming algebraically that the value of Y is correct: $$
 y = 5*3+10 = 25
 $$
 
@@ -241,6 +240,50 @@ ggplot(demand_df, aes(y = P))+
   theme_minimal()
 ```
 
+We calculated the new equilibrium price algebraically. First, we rewrote the original demand function for Q in terms of P: $$
+P = 500 - 0.1Q
+$$ 
+
+$$
+P - 500 = -0.1Q
+$$
+$$
+Q = 5000 - 10P
+$$
+Then, we rewrote the new demand function for Q in terms of P:
+$$
+P = 400 - 2Q
+$$
+$$
+P - 400 = -2Q
+$$
+$$
+Q = 200 - 0.5P
+$$
+
+We then added the two demand functions to find the aggregate demand for Q in terms of P:
+$$
+Q = 5000 - 10P + 200 - 0.5P
+$$
+$$
+Q = 5200 - 10.5P
+$$
+Expressing supply as Q in terms of P as well:
+$$
+Q = 20P - 100
+$$
+
+We then found the intersection of this aggregate demand line and the supply line by setting the equations equal and solving:
+$$
+20P - 100 = 5200 - 10.5P
+$$
+$$
+30.5P = 5300
+$$
+$$
+P = 173.77
+$$
+
 The new equilibrium price is 173.77 credits per jar.
 
 *d) Suppose that each jar of peanut butter that is traded generates carbon emissions due to fossil fuel intensive transport. This is called an “externality” and we will study them in detail throughout the course. Qualitatively, do you think this information should change the amount of peanut butter traded by food banks?*
@@ -280,6 +323,7 @@ p_star_cars <-car_supply(q_star_cars)
 # print number of cars
 print(q_star_cars)
 ```
+1,973 cars will be sold back to the state under this program.
 
 ii. *Use R to calculate the elasticity of supply of inefficient cars, evaluated at the market equilibrium.*
 
@@ -297,7 +341,13 @@ print(eval(supp_derivative)*(2000/1973))
 
 iii. *What are the benefits of this policy to owners of old cars?*
 
-The benefits of this policy to owners of old cars are that they can get rid of their old cars and receive a payment of \$2,000 for each car.
+```{r}
+# calculate producer surplus
+producer_surplus <- integrate(car_demand, 0, 1973)$value - integrate(car_supply, 0, 1973)$value
+print(producer_surplus)
+```
+
+The benefit to owners of old cars is the producer surplus of \$1,937,462. We calculated this by finding the integral of the demand curve from 0 to 1973, and subtracting the integral of the supply curve on that same interval.
 
 iv. *What is the cost of this program to taxpayers (who fund the government payments)?*
 
@@ -324,6 +374,7 @@ diff <- function(Q){
 Q_star_social_opt <- fzero(diff, c(0, 10000))$x
 print(Q_star_social_opt)
 ```
+
 The socially optimal number of cars to remove is 964.
 
 ii\. *Use R to find the optimal “cash for clunkers” price (which may differ from the current price of \$2,000).*
@@ -333,4 +384,5 @@ ii\. *Use R to find the optimal “cash for clunkers” price (which may differ 
 P_star_social_opt <- car_supply(Q_star_social_opt)
 print(P_star_social_opt)
 ```
+
 The optimal "cash for clunkers" price is \$961.90
